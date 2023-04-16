@@ -9,6 +9,7 @@ from gdeltdoc.helpers import load_json
 
 from gdeltdoc._version import version
 
+
 class GdeltDoc:
     """
     API client for the GDELT 2.0 Doc API
@@ -51,7 +52,7 @@ class GdeltDoc:
         for more information about the tone metric.
     """
 
-    def __init__(self,proxies=None,json_parsing_max_depth: int = 100) -> None:
+    def __init__(self, proxies=None, json_parsing_max_depth: int = 100) -> None:
         """
         Params
         ------
@@ -63,6 +64,7 @@ class GdeltDoc:
 
         """
         self.max_depth_json_parsing = json_parsing_max_depth
+        self.proxies = proxies
 
     def article_search(self, filters: Filters) -> pd.DataFrame:
         """
@@ -156,10 +158,10 @@ class GdeltDoc:
         }
         if self.proxies:
             response = requests.get(
-            f"https://api.gdeltproject.org/api/v2/doc/doc?query={query_string}&mode={mode}&format=json",
-            headers=headers,
-            proxies=proxies
-        )
+                f"https://api.gdeltproject.org/api/v2/doc/doc?query={query_string}&mode={mode}&format=json",
+                headers=headers,
+                proxies=proxies
+            )
         else:
             response = requests.get(
                 f"https://api.gdeltproject.org/api/v2/doc/doc?query={query_string}&mode={mode}&format=json",
