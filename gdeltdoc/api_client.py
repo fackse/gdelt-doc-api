@@ -160,7 +160,7 @@ class GdeltDoc:
             response = requests.get(
                 f"https://api.gdeltproject.org/api/v2/doc/doc?query={query_string}&mode={mode}&format=json",
                 headers=headers,
-                proxies=proxies
+                proxies=self.proxies
             )
         else:
             response = requests.get(
