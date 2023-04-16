@@ -51,13 +51,16 @@ class GdeltDoc:
         for more information about the tone metric.
     """
 
-    def __init__(self, json_parsing_max_depth: int = 100) -> None:
+    def __init__(self,proxies=None,json_parsing_max_depth: int = 100) -> None:
         """
         Params
         ------
         json_parsing_max_depth
             A parameter for the json parsing function that removes illegal character. If 100 it will remove at max
             100 characters before exiting with an exception
+        proxies
+            Smt. like { 'https' : 'http://user:pw@isp2.hydraproxy.com:9989' } 
+
         """
         self.max_depth_json_parsing = json_parsing_max_depth
 
@@ -151,11 +154,17 @@ class GdeltDoc:
         headers = {
             "User-Agent": f"GDELT DOC Python API client {version} - https://github.com/alex9smith/gdelt-doc-api"
         }
-
-        response = requests.get(
+        if self.proxies:
+            response = requests.get(
             f"https://api.gdeltproject.org/api/v2/doc/doc?query={query_string}&mode={mode}&format=json",
-            headers=headers
+            headers=headers,
+            proxies=proxies
         )
+        else:
+            response = requests.get(
+                f"https://api.gdeltproject.org/api/v2/doc/doc?query={query_string}&mode={mode}&format=json",
+                headers=headers
+            )
 
         if response.status_code not in [200, 202]:
             raise ValueError("The gdelt api returned a non-successful statuscode. This is the response message: {}".
